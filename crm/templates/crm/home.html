@@ -1,34 +1,8 @@
 {% extends 'crm/base.html' %} {% block content %} {% if user.is_authenticated %}
-<h1>Hello, {{ user }}</h1>
-{% else %} request.POST = {{test}}
+<div class="container text-center"><h1>Hello, {{ user }}</h1></div>
 
-<div class="container w-25">
-  <h1 class="text-center">Login</h1>
-  <br />
-  <form method="POST">
-    {% csrf_token %}
-    <div class="form-floating mb-4">
-      <input
-        type="text"
-        class="form-control"
-        id="floatingInput"
-        placeholder="Username"
-        name="username"
-      />
-      <label for="floatingInput">Username</label>
-    </div>
-    <div class="form-floating mb-4">
-      <input
-        type="password"
-        class="form-control"
-        id="floatingPassword"
-        placeholder="Password"
-        name="password"
-      />
-      <label for="floatingPassword">Password</label>
-    </div>
-    <button type="submit" class="btn btn-secondary">Login</button>
-  </form>
-</div>
+{% else %}
+
+<div class="container w-25">{% include 'crm/login.html' %}</div>
 
 {% endif %} {% endblock %}
