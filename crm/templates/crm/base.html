@@ -18,6 +18,8 @@
   <body>
     {% include 'crm/navbar.html' %}
     <br />
+    {% if messages %} {% include 'crm/messages.html' %} {% endif %}
+    <br />
     <div class="container-fluid">{% block content %} {% endblock %}</div>
 
     <script
