@@ -1,27 +1,40 @@
-<form method="post">
-  {% csrf_token %}
-  <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
-
-  <div class="form-floating">
-    <input
-      name="username"
-      type="text"
-      class="form-control"
-      id="floatingInput"
-      placeholder="username"
-    />
-    <label for="floatingInput">Username</label>
+<div class="container">
+  <div class="row">
+    <div class="col-xxl-4 col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto">
+      <form method="post">
+        {% csrf_token %}
+        <h1 class="h3 mb-3 fw-normal text-center">Please sign in</h1>
+        <br />
+        <div class="form-floating">
+          <input
+            name="username"
+            type="text"
+            class="form-control"
+            id="floatingInput"
+            placeholder="username"
+          />
+          <label for="floatingInput">Username</label>
+        </div>
+        <br />
+        <div class="form-floating">
+          <input
+            name="password"
+            type="password"
+            class="form-control"
+            id="floatingPassword"
+            placeholder="Password"
+          />
+          <label for="floatingPassword">Password</label>
+        </div>
+        <br />
+        <button class="btn btn-dark w-100 py-2" type="submit">Sign in</button>
+      </form>
+      <br />
+      <span class="form-text text-muted pb-3"
+        ><strong
+          >Need an account ? <a href="{% url 'register' %}">Register</a></strong
+        ></span
+      >
+    </div>
   </div>
-  <div class="form-floating">
-    <input
-      name="password"
-      type="password"
-      class="form-control"
-      id="floatingPassword"
-      placeholder="Password"
-    />
-    <label for="floatingPassword">Password</label>
-  </div>
-  <br />
-  <button class="btn btn-dark w-100 py-2" type="submit">Sign in</button>
-</form>
+</div>

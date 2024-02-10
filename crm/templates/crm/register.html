@@ -1,0 +1,52 @@
+{% extends 'crm/base.html' %} {% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xxl-5 col-xl-6 col-lg-8 col-md-10 col-sm-12 mx-auto">
+      <form method="post">
+        {% csrf_token %}<!---->
+        <h1 class="h3 mb-3 fw-normal text-center">Please Register</h1>
+        <br />
+
+        {% for field in form %}
+
+        <div class="form-floating">
+          {{ field }}<!---->
+
+          {% if field.label %}
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% endif %}<!---->
+
+          {% if field.help_text %}<!---->
+          {{ field.help_text|safe }}
+          <!--<span class="form-text text-muted small"
+              >{{ field.help_text|safe }}</span
+            >-->
+          {% endif %}<!---->
+
+          {% if field.errors %}
+          <div>
+            {% for error in field.errors %}
+            <span style="color: red"><strong>{{ error }}</strong><br /></span>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <br />
+        {% endfor %}
+        <button formnovalidate class="btn btn-dark w-100 py-2" type="submit">
+          Register
+        </button>
+      </form>
+      <br />
+      <span class="form-text text-muted pb-3"
+        ><strong
+          >Already have an account ?
+          <a href="{% url 'home' %}">Login</a></strong
+        ></span
+      >
+    </div>
+  </div>
+</div>
+
+{% endblock %}

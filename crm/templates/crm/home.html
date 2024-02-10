@@ -1,8 +1,4 @@
 {% extends 'crm/base.html' %} {% block content %} {% if user.is_authenticated %}
 <div class="container text-center"><h1>Hello, {{ user }}</h1></div>
 
-{% else %}
-
-<div class="container w-25">{% include 'crm/login.html' %}</div>
-
-{% endif %} {% endblock %}
+{% else %} {% include 'crm/login.html' %} {% endif %} {% endblock %}
