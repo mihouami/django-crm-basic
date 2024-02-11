@@ -2,10 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from .forms import UserRegisterForm
+from .models import Contact
 
 # Create your views here.
 def home(request):
-    context = {'title':'Home'}
+    contacts = Contact.objects.all()
+    context = {'title':'Home', 'contacts':contacts}
     context['request.method'] = request.method
     context['request'] = request
     if request.method == 'POST':
