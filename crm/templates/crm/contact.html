@@ -1,0 +1,51 @@
+{% extends 'crm/base.html' %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-xl-8 offset-xl-2">
+      <div class="card">
+        <h3 class="card-header">Contact Detail</h3>
+        <div class="card-body">
+          <div class="row pt-3 fs-5 g-3 ms-3">
+            <div class="col-lg-6">
+              First name: <strong>{{ contact.first_name}}</strong>
+            </div>
+            <div class="col-lg-6">
+              Last name: <strong>{{ contact.last_name}}</strong>
+            </div>
+          </div>
+          <br />
+          <div class="row fs-5 g-3 ms-3">
+            <div class="col-lg-6">
+              Email:<strong> {{ contact.email}}</strong>
+            </div>
+            <div class="col-lg-6">
+              Mobile: <strong>{{ contact.mobile}}</strong>
+            </div>
+          </div>
+          <br />
+          <div class="row fs-5 g-3 ms-3">
+            <div class="col-lg-6">
+              Company: <strong>{{ contact.company}}</strong>
+            </div>
+            <div class="col-lg-6">
+              Position: <strong>{{ contact.position}}</strong>
+            </div>
+          </div>
+          <br />
+          <div class="row text-center">
+            <div class="col">
+              <a class="m-3 btn btn-dark" href="{% url 'home' %}">Back</a>
+            </div>
+            <div class="col">
+              <a class="m-3 btn btn-secondary" href="">Update</a>
+            </div>
+            <div class="col">
+              <a class="m-3 btn btn-danger" href="">Delete</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

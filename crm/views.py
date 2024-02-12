@@ -52,4 +52,12 @@ def register_user(request):
     return render(request, 'crm/register.html', context)
 
 
+def contact_detail(request, pk):
+    if request.user.is_authenticated:
+        contact = Contact.objects.get(id=pk)
+        return render(request, 'crm/contact.html', {'contact':contact})
+    else:
+        return redirect('home')
+
+
 

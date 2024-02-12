@@ -1,25 +1,22 @@
 {% extends 'crm/base.html' %} {% block content %} {% if user.is_authenticated %}
-<div class="container text-center">
-  <h1>Hello, {{ user }}</h1>
-  <h2 class="p-3">Contacts</h2>
+<div class="container">
+  <h1 class="p-3">Contacts Table</h1>
 
-  <table class="table table-hover table-striped table-bordered">
+  <table class="table table-hover table-striped table-bordered text-center">
     <tr class="table table-dark">
       <th>Full Name</th>
-      <th>Email</th>
-      <th>Mobile</th>
       <th>Company</th>
       <th>Position</th>
-      <th>ID</th>
+      <th>Action</th>
     </tr>
     {% for contact in contacts%}
     <tr>
       <td>{{ contact.first_name }} {{ contact.last_name }}</td>
-      <td>{{ contact.email }}</td>
-      <td>{{ contact.mobile }}</td>
       <td>{{ contact.company }}</td>
       <td>{{ contact.position }}</td>
-      <td>{{ contact.id }}</td>
+      <td>
+        <a class="btn btn-dark" href="{% url 'contact' contact.id %}">Detail</a>
+      </td>
     </tr>
     {% endfor %}
   </table>
