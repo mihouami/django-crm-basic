@@ -1,0 +1,83 @@
+{% extends 'crm/base.html' %} {% load crispy_forms_tags %} {% block content %}<!---->
+
+<div class="container">
+  <div class="row">
+    <div class="col-xl-8 offset-xl-2">
+      <div class="card">
+        <h3 class="card-header">Update Contact</h3>
+        <form action="" method="post">
+          {% csrf_token %}
+          <div class="card-body">
+            <div class="row pt-3 fs-5 g-3 ms-3">
+              <div class="col-lg-6">
+                <p class="fs-6" style="margin-bottom: 0px">First name:</p>
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{form.first_name|as_crispy_field }}</strong>
+                </p>
+
+                <hr style="margin-top: 0px" />
+              </div>
+
+              <div class="col-lg-6">
+                <p class="fs-6" style="margin-bottom: 0px">Last name:</p>
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{form.last_name|as_crispy_field }}</strong>
+                </p>
+                <hr style="margin-top: 0px" />
+              </div>
+            </div>
+
+            <div class="row pt-3 fs-5 g-3 ms-3">
+              <div class="col-lg-6">
+                <p class="fs-6" style="margin-bottom: 0px">Email:</p>
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{ form.email|as_crispy_field }}</strong>
+                </p>
+                <hr style="margin-top: 0px" />
+              </div>
+              <div class="col-lg-6">
+                <p class="fs-6" style="margin-bottom: 0px">Mobile:</p>
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{ form.mobile|as_crispy_field }}</strong>
+                </p>
+                <hr style="margin-top: 0px" />
+              </div>
+            </div>
+
+            <div class="row pt-3 fs-5 g-3 ms-3">
+              <div class="col-lg-6">
+                <p class="fs-6" style="margin-bottom: 0px">Company:</p>
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{ form.company|as_crispy_field }}</strong>
+                </p>
+                <hr style="margin-top: 0px" />
+              </div>
+              <div class="col-lg-6">
+                <p class="fs-6" style="margin-bottom: 0px">Position:</p>
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{ form.position|as_crispy_field }}</strong>
+                </p>
+                <hr style="margin-top: 0px" />
+              </div>
+            </div>
+            <div class="row text-center my-3">
+              <div class="col">
+                <a
+                  class="btn btn-secondary"
+                  href="{% url 'contact' form.instance.id %}"
+                  >Back</a
+                >
+              </div>
+              <div class="col">
+                <button formnovalidate class="btn btn-success" type="submit">
+                  Update
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

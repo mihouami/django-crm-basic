@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from .forms import UserRegisterForm, AddContactForm
 from .models import Contact
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 def home(request):
@@ -81,6 +83,15 @@ def add_contact(request):
         messages.success(request, 'Contact added')
         return redirect('home')
 
+@login_required
+def update_contact(request, id):
+    contact = get_object_or_404(Contact, pk=id)
+    form = AddContactForm(request.POST or None, instance=contact)
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Contact has been updated')
+        return redirect('contact', pk=id)
+    return render(request, 'crm/update_contact.html', {'form':form})
 
 
 
