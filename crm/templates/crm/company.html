@@ -1,0 +1,65 @@
+{% extends 'crm/base.html' %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-xl-8 offset-xl-2">
+      <div class="card">
+        <h3 class="card-header">Company Detail</h3>
+        <div class="card-body">
+          <div class="row pt-3 fs-5 g-3 ms-3">
+            <div class="col-lg-6">
+              <p class="fs-6" style="margin-bottom: 0px">Name:</p>
+              <p style="margin-bottom: 0px" class="position-relative">
+                <strong>{{ company.name}}</strong>
+                <a href=""
+                  ><i
+                    class="bi bi-pencil-fill position-absolute top-0 end-0 link-dark"
+                  ></i
+                ></a>
+              </p>
+
+              <hr style="margin-top: 0px" />
+            </div>
+
+            <div class="col-lg-6">
+              <p class="fs-6" style="margin-bottom: 0px">City:</p>
+              <p style="margin-bottom: 0px" class="position-relative">
+                <strong>{{ company.city}}</strong
+                ><a href=""
+                  ><i
+                    class="bi bi-pencil-fill position-absolute top-0 end-0 link-dark"
+                  ></i
+                ></a>
+              </p>
+              <hr style="margin-top: 0px" />
+            </div>
+          </div>
+          <br />
+          {% for contact in company.contact_set.all %}
+          <ul>
+            <li>{{ contact }}</li>
+          </ul>
+          {% endfor %}
+
+          <div class="row text-center my-3">
+            <div class="col">
+              <a class="btn btn-secondary" href="{% url 'home' %}">Back</a>
+            </div>
+            <div class="col">
+              <!-- Button trigger modal -->
+              <button
+                type="button"
+                class="btn btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+              >
+                Delete
+              </button>
+              {% include 'crm/delete_company_modal.html' %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

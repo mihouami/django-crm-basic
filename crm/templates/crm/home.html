@@ -1,30 +1,61 @@
 {% extends 'crm/base.html' %} {% block content %} {% if user.is_authenticated %}
-<div class="container">
-  {% if not contacts %}
-  <h1 class="p-3">Contact table is empty</h1>
-  {% else %}
-  <h1 class="p-3">Contacts Table</h1>
-  <table class="table table-hover table-striped table-bordered text-center">
-    <tr class="table table-dark">
-      <th>Full Name</th>
-      <th>Company</th>
-      <th>Position</th>
-      <th>Action</th>
-    </tr>
-    {% for contact in contacts%}
-    <tr>
-      <td>{{ contact.first_name }} {{ contact.last_name }}</td>
-      <td>{{ contact.company }}</td>
-      <td>{{ contact.position }}</td>
-      <td>
-        <a class="btn btn-secondary" href="{% url 'contact' contact.id %}"
-          >Detail</a
-        >
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% endif %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      {% if not contacts %}
+      <h1 class="p-3">Contact table is empty</h1>
+      {% else %}
+      <h1 class="p-3">Contacts Table</h1>
+      <table class="table table-hover table-striped table-bordered text-center">
+        <tr class="table table-dark">
+          <th>Full Name</th>
+          <th>Company</th>
+          <th>Position</th>
+          <th>Action</th>
+        </tr>
+        {% for contact in contacts%}
+        <tr>
+          <td>{{ contact.first_name }} {{ contact.last_name }}</td>
+          <td>{{ contact.company }}</td>
+          <td>{{ contact.position }}</td>
+          <td>
+            <a class="btn btn-secondary" href="{% url 'contact' contact.id %}"
+              >Detail</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+    <div class="col">
+      {% if not compagnies %}
+      <h1 class="p-3">Company table is empty</h1>
+      {% else %}
+      <h1 class="p-3">Compagnies Table</h1>
+      <table class="table table-hover table-striped table-bordered text-center">
+        <tr class="table table-dark">
+          <th>Name</th>
+          <th>City</th>
+          <th>N° of employees</th>
+          <th>Action</th>
+        </tr>
+        {% for company in compagnies %}
+        <tr>
+          <td>{{ company.name }}</td>
+          <td>{{ company.city }}</td>
+          <td>{{ company.contact_set.count }}</td>
+          <td>
+            <a class="btn btn-secondary" href="{% url 'company' company.id %}"
+              >Detail</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+  </div>
 </div>
 
 {% else %} {% include 'crm/login.html' %} {% endif %} {% endblock %}

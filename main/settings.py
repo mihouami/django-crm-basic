@@ -129,5 +129,4 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-#redirect user when they try to access a login required view
-LOGIN_URL = ''
+

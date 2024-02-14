@@ -2,14 +2,17 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
 from .forms import UserRegisterForm, AddContactForm
-from .models import Contact
+from .models import Contact, Company
 from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+
+#HOME AND LOGIN PAGE
 def home(request):
     contacts = Contact.objects.all()
-    context = {'title':'Home', 'contacts':contacts}
+    compagnies = Company.objects.all()
+    context = {'title':'Home', 'contacts':contacts, 'compagnies':compagnies}
     context['request.method'] = request.method
     context['request'] = request
     if request.method == 'POST':
@@ -26,6 +29,7 @@ def home(request):
     
     return render(request, 'crm/home.html', context)
 
+#LOGOUT & REGISTER VIEWS
 def logout_user(request):
     logout(request)
     messages.success(request, "You have been logged Out.")
@@ -53,7 +57,7 @@ def register_user(request):
     }
     return render(request, 'crm/register.html', context)
 
-
+#CONTACTS VIEWS
 def contact_detail(request, pk):
     if request.user.is_authenticated:
         contact = Contact.objects.get(id=pk)
@@ -61,6 +65,7 @@ def contact_detail(request, pk):
     else:
         return redirect('home')
     
+
 def delete_contact(request, pk):
     if request.user.is_authenticated:
         contact = get_object_or_404(Contact, id=pk)
@@ -69,6 +74,7 @@ def delete_contact(request, pk):
     else:
         messages.warning(request, 'You must be logged In.')
     return redirect('home')
+
 
 def add_contact(request):
     if request.user.is_authenticated:
@@ -80,18 +86,33 @@ def add_contact(request):
                 return redirect('home')
         return render(request, 'crm/add_contact2.html', {'form':form})
     else:
-        messages.success(request, 'Contact added')
+        messages.success(request, 'You need to be logged in to access this page')
         return redirect('home')
 
-@login_required
+
 def update_contact(request, id):
-    contact = get_object_or_404(Contact, pk=id)
-    form = AddContactForm(request.POST or None, instance=contact)
-    if form.is_valid():
-        form.save()
-        messages.success(request, 'Contact has been updated')
-        return redirect('contact', pk=id)
-    return render(request, 'crm/update_contact.html', {'form':form})
+    if request.user.is_authenticated:
+        contact = get_object_or_404(Contact, pk=id)
+        form = AddContactForm(request.POST or None, instance=contact)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Contact has been updated')
+            return redirect('contact', pk=id)
+        return render(request, 'crm/update_contact.html', {'form':form})
+    else:
+        messages.success(request, 'You need to be logged in to access this page')
+        return redirect('home')
+
+
+#COMPANY VIEWS
+def company_detail(request, pk):
+    if request.user.is_authenticated:
+        company = get_object_or_404(Company, pk=pk)
+        return render(request,'crm/company.html', {'company':company})
+    else:
+        messages.success(request, 'You need to be logged in to access this page')
+        return redirect('home')
+
 
 
 
