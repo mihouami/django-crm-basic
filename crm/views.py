@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, AddContactForm
 from .models import Contact
 
 # Create your views here.
@@ -58,6 +58,31 @@ def contact_detail(request, pk):
         return render(request, 'crm/contact.html', {'contact':contact})
     else:
         return redirect('home')
+    
+def delete_contact(request, pk):
+    if request.user.is_authenticated:
+        contact = get_object_or_404(Contact, id=pk)
+        contact.delete()
+        messages.success(request, 'Contact has been deleted')
+    else:
+        messages.warning(request, 'You must be logged In.')
+    return redirect('home')
+
+def add_contact(request):
+    if request.user.is_authenticated:
+        form = AddContactForm(request.POST or None)
+        if request.method == 'POST':
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Contact added')
+                return redirect('home')
+        return render(request, 'crm/add_contact2.html', {'form':form})
+    else:
+        messages.success(request, 'Contact added')
+        return redirect('home')
+
+
+
 
 
 

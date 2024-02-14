@@ -1,7 +1,9 @@
 {% extends 'crm/base.html' %} {% block content %} {% if user.is_authenticated %}
 <div class="container">
+  {% if not contacts %}
+  <h1 class="p-3">Contact table is empty</h1>
+  {% else %}
   <h1 class="p-3">Contacts Table</h1>
-
   <table class="table table-hover table-striped table-bordered text-center">
     <tr class="table table-dark">
       <th>Full Name</th>
@@ -15,11 +17,14 @@
       <td>{{ contact.company }}</td>
       <td>{{ contact.position }}</td>
       <td>
-        <a class="btn btn-dark" href="{% url 'contact' contact.id %}">Detail</a>
+        <a class="btn btn-secondary" href="{% url 'contact' contact.id %}"
+          >Detail</a
+        >
       </td>
     </tr>
     {% endfor %}
   </table>
+  {% endif %}
 </div>
 
 {% else %} {% include 'crm/login.html' %} {% endif %} {% endblock %}

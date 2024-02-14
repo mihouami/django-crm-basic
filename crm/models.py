@@ -6,7 +6,7 @@ class Contact(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    email = models.EmailField(max_length=100)
+    email = models.EmailField(max_length=100, unique=True)
     mobile = models.CharField(max_length=20)
     company = models.CharField(max_length=50)
     position = models.CharField(max_length=50)
