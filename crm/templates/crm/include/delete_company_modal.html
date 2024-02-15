@@ -9,7 +9,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Contact</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Company</h1>
         <button
           type="button"
           class="btn-close"
@@ -18,13 +18,18 @@
         ></button>
       </div>
       <div class="modal-body">
-        Are you sure you want to delete this contact ?
+        Are you sure you want to delete <strong>{{ company.name }}</strong> ?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
           Close
         </button>
-        <a class="btn btn-danger" href="">Confirm</a>
+        <form action="{% url 'company' company.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" name="delete" class="btn btn-danger">
+            Confirm
+          </button>
+        </form>
       </div>
     </div>
   </div>

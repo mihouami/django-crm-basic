@@ -108,10 +108,29 @@ def update_contact(request, id):
 def company_detail(request, pk):
     if request.user.is_authenticated:
         company = get_object_or_404(Company, pk=pk)
+        if request.method == 'POST':
+            if 'delete' in request.POST:
+                company.delete()
+                messages.success(request, 'Company has been deleted')
+                return redirect('home')
         return render(request,'crm/company.html', {'company':company})
     else:
         messages.success(request, 'You need to be logged in to access this page')
         return redirect('home')
+    
+"""
+def delete_company(request, pk):
+    if request.user.is_authenticated:
+        company = get_object_or_404(Company, pk=pk)
+        company.delete()
+        messages.success(request, 'Company has been deleted')
+        return redirect('home')
+    else:
+        messages.success(request, 'You need to be logged in to access this page')
+        return redirect('home')
+"""
+
+        
 
 
 

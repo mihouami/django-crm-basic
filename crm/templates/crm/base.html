@@ -20,9 +20,9 @@
     {% endif %}
   </head>
   <body class="bg-body-tertiary">
-    {% include 'crm/navbar.html' %}
+    {% include 'crm/include/navbar.html' %}
     <br />
-    {% if messages %} {% include 'crm/messages.html' %} {% endif %}
+    {% if messages %} {% include 'crm/include/messages.html' %} {% endif %}
     <br />
     {% block content %} {% endblock %}
 
