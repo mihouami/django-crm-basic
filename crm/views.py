@@ -83,7 +83,7 @@ def delete_contact(request, pk):
         messages.success(request, 'Contact has been deleted')
     else:
         messages.warning(request, 'You must be logged In.')
-    return redirect('home')
+    return redirect('contacts')
 
 
 def add_contact(request):
@@ -93,7 +93,8 @@ def add_contact(request):
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Contact added')
-                return redirect('home')
+                previous_page = request.META.get('HTTP_REFERER')
+                return redirect(previous_page)
         return render(request, 'crm/add_contact2.html', {'form':form})
     else:
         messages.success(request, 'You need to be logged in to access this page')
