@@ -58,11 +58,21 @@ def register_user(request):
     return render(request, 'crm/register.html', context)
 
 #CONTACTS VIEWS
+def contacts(request):
+    if request.user.is_authenticated:
+        contacts = Contact.objects.all()
+        return render(request, 'crm/contacts.html', {'contacts':contacts})
+    else:
+        messages.warning(request, 'You must be logged In.')
+        return redirect('home')
+
+
 def contact_detail(request, pk):
     if request.user.is_authenticated:
         contact = Contact.objects.get(id=pk)
         return render(request, 'crm/contact.html', {'contact':contact})
     else:
+        messages.warning(request, 'You must be logged In.')
         return redirect('home')
     
 

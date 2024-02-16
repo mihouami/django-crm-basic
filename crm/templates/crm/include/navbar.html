@@ -19,7 +19,34 @@
         </li>
         {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'add_contact' %}">Add Contact</a>
+          <a class="nav-link" href="">Compagnies</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Contacts
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" href="{% url 'contacts' %}"
+                >View all contact</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item" href="{% url 'add_contact' %}"
+                >Add contact</a
+              >
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="">Offers</a>
         </li>
         {% endif %}
       </ul>
