@@ -12,7 +12,7 @@
 
 <div class="container-fluid">
   <div class="row justify-content-center">
-    <div class="col-8">
+    <div class="col-lg-8">
       {% if not contacts %}
       <h1 class="p-3">Contact table is empty</h1>
       {% else %}
@@ -26,25 +26,33 @@
         >
       </h1>
 
-      <table class="table table-hover table-striped table-bordered text-center">
-        <tr class="table table-dark">
-          <th>Full Name</th>
-          <th>Company</th>
-          <th>Position</th>
-          <th>Action</th>
-        </tr>
-        {% for contact in contacts%}
-        <tr>
-          <td>{{ contact.first_name }} {{ contact.last_name }}</td>
-          <td>{{ contact.company }}</td>
-          <td>{{ contact.position }}</td>
-          <td>
-            <a class="btn btn-secondary" href="{% url 'contact' contact.id %}"
-              >Detail</a
-            >
-          </td>
-        </tr>
-        {% endfor %}
+      <table
+        class="display table table-hover table-striped table-bordered text-center"
+        style="width: 100"
+        id=""
+      >
+        <thead class="bg-dark">
+          <tr class="table table-dark">
+            <th class="text-center">Full Name</th>
+            <th class="text-center">Company</th>
+            <th class="text-center">Position</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for contact in contacts%}
+          <tr>
+            <td>{{ contact.first_name }} {{ contact.last_name }}</td>
+            <td>{{ contact.company }}</td>
+            <td>{{ contact.position }}</td>
+            <td>
+              <a class="btn btn-secondary" href="{% url 'contact' contact.id %}"
+                >Detail</a
+              >
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
       </table>
       {% endif %}
     </div>
