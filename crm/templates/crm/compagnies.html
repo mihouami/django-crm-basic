@@ -1,0 +1,42 @@
+{% extends 'crm/base.html' %} {% block content %}
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-8">
+      {% if not compagnies %}
+      <h1 class="p-3">Company table is empty</h1>
+      {% else %}
+
+      <h1 class="p-3 position-relative">
+        Compagnies Table
+        <a
+          class="btn btn-secondary position-absolute top-50 end-0"
+          href="{% url 'add_company' %}"
+          >Add Compagnie</a
+        >
+      </h1>
+
+      <table class="table table-hover table-striped table-bordered text-center">
+        <tr class="table table-dark">
+          <th>Name</th>
+          <th>City</th>
+          <th>N° of Contacts</th>
+          <th>Action</th>
+        </tr>
+        {% for compagnie in compagnies %}
+        <tr>
+          <td>{{ compagnie.name }}</td>
+          <td>{{ compagnie.city }}</td>
+          <td>{{ compagnie.contact_set.count }}</td>
+          <td>
+            <a class="btn btn-secondary" href="{% url 'company' compagnie.id %}"
+              >Detail</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -4,6 +4,9 @@
     <div class="col-xl-8 offset-xl-2">
       <div class="card">
         <h3 class="card-header">Contact Detail</h3>
+
+        page:{{page}}
+
         <div class="card-body">
           <div class="row pt-3 fs-5 g-3 ms-3">
             <div class="col-lg-6">
@@ -92,7 +95,11 @@
           </div>
           <div class="row text-center my-3">
             <div class="col">
+              {% if previous %} previous : {{ previous }}
+              <a class="btn btn-secondary" href="{{ previous }}">Back</a>
+              {% else %}
               <a class="btn btn-secondary" href="{% url 'contacts' %}">Back</a>
+              {% endif %}
             </div>
             <div class="col">
               <!-- Button trigger modal -->

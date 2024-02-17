@@ -2,14 +2,17 @@ from django.db import models
 
 # Create your models here.
 
+class Previous(models.Model):
+    previous = models.URLField(max_length=200, blank=True, null=True)
+
 class Company(models.Model):
     class TypeChoice(models.TextChoices):
-        ALGER = 'ALG', 'Alger'
-        ORAN = 'ORN', 'Oran'
-        ANNABA = 'ANB', 'Annaba'
+        ALGER = 'Alger', 'Alger'
+        ORAN = 'Oran', 'Oran'
+        ANNABA = 'Annaba', 'Annaba'
 
     name = models.CharField(max_length=100, unique=True)
-    city = models.CharField(max_length=3, choices=TypeChoice.choices)
+    city = models.CharField(max_length=25, choices=TypeChoice.choices)
 
     def __str__(self):
         return self.name
@@ -24,7 +27,7 @@ class Contact(models.Model):
     position = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.first_name} {self.last_name} {self.company}'
+        return f'{self.first_name} {self.last_name} - {self.company}'
     
 
 

@@ -1,0 +1,63 @@
+{% extends 'crm/base.html' %} {% load crispy_forms_tags %} {% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-xl-8 offset-xl-2">
+      <div class="card">
+        {% if not form.instance.id %}
+        <h3 class="card-header">Add company</h3>
+        {% else %}
+        <h3 class="card-header">Update company</h3>
+        {% endif %}
+
+        <form method="post">
+          {% csrf_token %}
+          <div class="card-body">
+            <div class="row pt-3 fs-5 g-3 ms-3">
+              <div class="col-lg-6">
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{ form.name|as_crispy_field }}</strong>
+                </p>
+
+                <hr style="margin-top: 0px" />
+              </div>
+
+              <div class="col-lg-6">
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{ form.city|as_crispy_field }}</strong>
+                </p>
+                <hr style="margin-top: 0px" />
+              </div>
+            </div>
+            <br />
+            <div class="row text-center my-3">
+              <div class="col">
+                {% if previous %}<a
+                  class="btn btn-secondary"
+                  href="{{ previous }}"
+                  >Back</a
+                >
+                {% else %}
+                <a class="btn btn-secondary" href="{% url 'compagnies' %}"
+                  >Back</a
+                >{% endif %}
+              </div>
+
+              <div class="col">
+                {% if form.instance.id %}
+                <button formnovalidate class="btn btn-success" type="submit">
+                  Update
+                </button>
+                {% else %}
+                <button formnovalidate class="btn btn-success" type="submit">
+                  Save
+                </button>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

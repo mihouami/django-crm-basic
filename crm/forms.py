@@ -2,29 +2,36 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import EmailField, CharField, TextInput, ModelForm, ModelChoiceField, Select
 from .models import Contact, Company
-from crispy_bootstrap5.bootstrap5 import FloatingField
-from crispy_forms.helper import FormHelper
 
+
+class CompanyForm(ModelForm):
+    class Meta:
+        model = Company
+        fields = ('name', 'city')
+
+class AddContactFromCompanyForm(ModelForm):
+    class Meta:
+        model = Contact
+        exclude = ['company']
 
 class AddContactForm(ModelForm):
-    
     first_name = CharField(label='', widget=TextInput(attrs={'class':'form-control', 'placeholder':'test'}))
     company = ModelChoiceField(
         queryset=Company.objects.all(), 
         label='', 
         widget=Select(attrs={'class':'form-control'})
     )
-
     """
     last_name = CharField(label='', widget=TextInput(attrs={'class':'form-control'}))
     email = CharField(label='', widget=TextInput(attrs={'class':'form-control'}))
     mobile = CharField(label='', widget=TextInput(attrs={'class':'form-control'}))
     position = CharField(label='', widget=TextInput(attrs={'class':'form-control'}))
     """
-
     class Meta:
         model = Contact
         fields = '__all__'
+
+
 
 class UserRegisterForm(UserCreationForm):
     email = EmailField(label='Email', widget=TextInput(attrs={'placeholder':'Email'}))

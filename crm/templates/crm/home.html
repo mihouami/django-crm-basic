@@ -1,34 +1,25 @@
 {% extends 'crm/base.html' %} {% block content %} {% if user.is_authenticated %}
 <div class="container-fluid">
-  <div class="row justify-content-center">
-    <div class="col-8">
-      {% if not compagnies %}
-      <h1 class="p-3">Company table is empty</h1>
-      {% else %}
-      <h1 class="p-3">Compagnies Table</h1>
-      <table class="table table-hover table-striped table-bordered text-center">
-        <tr class="table table-dark">
-          <th>Name</th>
-          <th>City</th>
-          <th>N° of employees</th>
-          <th>Action</th>
-        </tr>
-        {% for company in compagnies %}
-        <tr>
-          <td>{{ company.name }}</td>
-          <td>{{ company.city }}</td>
-          <td>{{ company.contact_set.count }}</td>
-          <td>
-            <a class="btn btn-secondary" href="{% url 'company' company.id %}"
-              >Detail</a
-            >
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
-      {% endif %}
-    </div>
-  </div>
-</div>
+  <ul>
+    <li>N° of contacts : {{ contacts.count }}</li>
+    <li>N° of compagnies : {{ compagnies.count }}</li>
+    {% for companyy in compagnies_per_city %}
+    <li>
+      {{ companyy.city }}: {{ companyy.company_count }}
+      <ul>
+        {% for company in compagnies %} {% if company.city == companyy.city %}
+        <li>{{ company.name }}: {{ company.contact_set.count }}</li>
+        <ul>
+          {% for contact in company.contact_set.all %}
+          <li>{{ contact.first_name }} {{ contact.last_name }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %} {% endfor %}
+      </ul>
+    </li>
+    {% endfor %}
+  </ul>
 
-{% else %} {% include 'crm/include/login.html' %} {% endif %} {% endblock %}
+  {% else %} {% include 'crm/include/login.html' %} {% endif %}
+</div>
+{% endblock %}

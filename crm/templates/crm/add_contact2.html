@@ -5,7 +5,7 @@
     <div class="col-xl-8 offset-xl-2">
       <div class="card">
         <h3 class="card-header">Add Contact</h3>
-        <form action="" method="post">
+        <form method="post">
           {% csrf_token %}
           <div class="card-body">
             <div class="row pt-3 fs-5 g-3 ms-3">
@@ -44,9 +44,15 @@
             <div class="row pt-3 fs-5 g-3 ms-3">
               <div class="col-lg-6">
                 <p class="fs-6" style="margin-bottom: 0px">Company:</p>
+                {% if company %}
+                <p style="margin-bottom: 0px" class="position-relative">
+                  <strong>{{ company.name }}</strong>
+                </p>
+                {% else %}
                 <p style="margin-bottom: 0px" class="position-relative">
                   <strong>{{ form.company|as_crispy_field }}</strong>
                 </p>
+                {% endif %}
                 <hr style="margin-top: 0px" />
               </div>
               <div class="col-lg-6">
@@ -58,9 +64,13 @@
             </div>
             <div class="row text-center my-3">
               <div class="col">
+                {% if previous %}
+                <a class="btn btn-secondary" href="{{ previous }}">Back</a>
+                {% else %}
                 <a class="btn btn-secondary" href="{% url 'contacts' %}"
                   >Back</a
                 >
+                {% endif %}
               </div>
               <div class="col">
                 <button formnovalidate class="btn btn-success" type="submit">

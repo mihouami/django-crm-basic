@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
-from .forms import UserRegisterForm, AddContactForm
-from .models import Contact, Company
-from django.contrib.auth.decorators import login_required
+from .forms import UserRegisterForm, AddContactForm, CompanyForm, AddContactFromCompanyForm
+from .models import Contact, Company, Previous
+from django.db.models import Count
 
 
-# Create your views here.
+#USERS VIEW
 
 #HOME AND LOGIN PAGE
 def home(request):
@@ -15,10 +15,13 @@ def home(request):
     context = {'title':'Home', 'contacts':contacts, 'compagnies':compagnies}
     context['request.method'] = request.method
     context['request'] = request
+    context['compagnies_per_city'] = Company.objects.values('city').annotate(company_count=Count('id'))
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         context['test'] = request.POST
+        
+
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -69,8 +72,11 @@ def contacts(request):
 
 def contact_detail(request, pk):
     if request.user.is_authenticated:
-        contact = Contact.objects.get(id=pk)
-        return render(request, 'crm/contact.html', {'contact':contact})
+        page = request.META.get('HTTP_REFERER')
+        if 'update_contact' not in str(page) and page != None:
+            Previous.objects.create(previous=page)
+        context = {'contact':Contact.objects.get(id=pk), 'previous':Previous.objects.last().previous, 'page':type(page)}
+        return render(request, 'crm/contact.html', context)
     else:
         messages.warning(request, 'You must be logged In.')
         return redirect('home')
@@ -89,13 +95,17 @@ def delete_contact(request, pk):
 def add_contact(request):
     if request.user.is_authenticated:
         form = AddContactForm(request.POST or None)
+        page = request.META.get('HTTP_REFERER')
+        if 'add_contact' not in str(page) and page != None:
+            Previous.objects.create(previous=page)
+        context = {'form':form, 'previous':Previous.objects.last().previous}
         if request.method == 'POST':
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Contact added')
                 previous_page = request.META.get('HTTP_REFERER')
                 return redirect(previous_page)
-        return render(request, 'crm/add_contact2.html', {'form':form})
+        return render(request, 'crm/add_contact2.html', context)
     else:
         messages.success(request, 'You need to be logged in to access this page')
         return redirect('home')
@@ -107,7 +117,6 @@ def update_contact(request, id):
         form = AddContactForm(request.POST or None, instance=contact)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Contact has been updated')
             return redirect('contact', pk=id)
         return render(request, 'crm/update_contact.html', {'form':form})
     else:
@@ -116,6 +125,15 @@ def update_contact(request, id):
 
 
 #COMPANY VIEWS
+def compagnies(request):
+     if request.user.is_authenticated:
+         compagnies = Company.objects.all()
+         return render(request, 'crm/compagnies.html', {'compagnies':compagnies})
+     else:
+        messages.success(request, 'You need to be logged in to access this page')
+        return redirect('home')
+         
+
 def company_detail(request, pk):
     if request.user.is_authenticated:
         company = get_object_or_404(Company, pk=pk)
@@ -128,6 +146,61 @@ def company_detail(request, pk):
     else:
         messages.success(request, 'You need to be logged in to access this page')
         return redirect('home')
+    
+
+def add_company(request):
+    if request.user.is_authenticated:
+        form = CompanyForm(request.POST or None)
+        page = request.META.get('HTTP_REFERER')
+        if 'add_company' not in str(page) and page != None:
+            Previous.objects.create(previous=page)
+        if request.method == 'POST':
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Company added')
+                previous_page = request.META.get('HTTP_REFERER')
+                return redirect(previous_page)
+        context = {'form':form, 'previous':Previous.objects.last().previous}
+        return render(request, 'crm/add_update_company.html', context)
+    else:
+        messages.success(request, 'You need to be logged in to access this page')
+        return redirect('home')
+    
+def update_company(request, pk):
+    if request.user.is_authenticated:
+        company = Company.objects.get(id=pk)
+        form = CompanyForm(request.POST or None, instance=company)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Record updated')
+            return redirect('company', pk=pk)
+        return render(request, 'crm/add_update_company.html', {'form':form})
+    else:
+        messages.warning(request, 'You need to be logged in to access this page')
+        return redirect('home')
+    
+def add_contact_from_company(request, pk):
+    if request.user.is_authenticated:
+        company = Company.objects.get(id=pk)
+        form = AddContactFromCompanyForm(request.POST or None)
+        page = request.META.get('HTTP_REFERER')
+        if 'add_contact' not in str(page) and page != None:
+            Previous.objects.create(previous=page)
+        if request.method == 'POST':
+            if form.is_valid():
+                contact = form.save(commit=False)
+                contact.company = company
+                form.save()
+                messages.success(request, 'Contact added')
+                previous_page = request.META.get('HTTP_REFERER')
+                return redirect(previous_page)
+        context = {'form':form, 'company':company, 'previous':Previous.objects.last().previous}
+        return render(request, 'crm/add_contact2.html', context)
+    else:
+        messages.success(request, 'You need to be logged in to access this page')
+        return redirect('home')
+
+
     
 """
 def delete_company(request, pk):
