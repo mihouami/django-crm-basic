@@ -1,4 +1,25 @@
 {% extends 'crm/base.html' %} {% load crispy_forms_tags %} {% block content %}
+<div class="container-fluid">
+  <!--BREADCRUMB-->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'compagnies' %}">Compagnies</a>
+      </li>
+      {% if company %}
+      <li class="breadcrumb-item">
+        <a href="{% url 'company' company.id %}">{{ company.name }}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Update</li>
+      {% else %}
+      <li class="breadcrumb-item active" aria-current="page">Add company</li>
+      {% endif %}
+    </ol>
+  </nav>
+  <!--BREADCRUMB END-->
+</div>
+
 <div class="container">
   <div class="row">
     <div class="col-xl-8 offset-xl-2">
@@ -31,25 +52,33 @@
             <br />
             <div class="row text-center my-3">
               <div class="col">
-                {% if previous %}<a
-                  class="btn btn-secondary"
-                  href="{{ previous }}"
-                  >Back</a
-                >
-                {% else %}
-                <a class="btn btn-secondary" href="{% url 'compagnies' %}"
-                  >Back</a
-                >{% endif %}
-              </div>
-
-              <div class="col">
                 {% if form.instance.id %}
                 <button formnovalidate class="btn btn-success" type="submit">
                   Update
                 </button>
                 {% else %}
-                <button formnovalidate class="btn btn-success" type="submit">
-                  Save
+                <button
+                  formnovalidate
+                  class="btn btn-success"
+                  type="submit"
+                  name="save"
+                >
+                  SAVE
+                </button>
+                <button
+                  formnovalidate
+                  class="btn btn-outline-success"
+                  type="submit"
+                >
+                  Save and add another
+                </button>
+                <button
+                  formnovalidate
+                  class="btn btn-outline-dark"
+                  type="submit"
+                  name="continue"
+                >
+                  Save and view company page
                 </button>
                 {% endif %}
               </div>

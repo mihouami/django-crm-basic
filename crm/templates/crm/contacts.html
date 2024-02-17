@@ -1,5 +1,16 @@
 {% extends 'crm/base.html' %} {% block content %}
 <div class="container-fluid">
+  <!--BREADCRUMB-->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Contacts</li>
+    </ol>
+  </nav>
+  <!--BREADCRUMB END-->
+</div>
+
+<div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-8">
       {% if not contacts %}

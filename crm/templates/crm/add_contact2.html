@@ -1,5 +1,38 @@
 {% extends 'crm/base.html' %} {% load crispy_forms_tags %} {% block content %}<!---->
 
+{% if company %}
+<div class="container-fluid">
+  <!--BREADCRUMB-->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'compagnies' %}">Compagnies</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'company' company.id %}">{{ company.name }}</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Add contact</li>
+    </ol>
+  </nav>
+  <!--BREADCRUMB END-->
+</div>
+{% else %}
+<div class="container-fluid">
+  <!--BREADCRUMB-->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item">
+        <a href="{% url 'contacts' %}">Contacts</a>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">Add Contact</li>
+    </ol>
+  </nav>
+  <!--BREADCRUMB END-->
+</div>
+{% endif %}
+
 <div class="container">
   <div class="row">
     <div class="col-xl-8 offset-xl-2">
@@ -63,15 +96,6 @@
               </div>
             </div>
             <div class="row text-center my-3">
-              <div class="col">
-                {% if previous %}
-                <a class="btn btn-secondary" href="{{ previous }}">Back</a>
-                {% else %}
-                <a class="btn btn-secondary" href="{% url 'contacts' %}"
-                  >Back</a
-                >
-                {% endif %}
-              </div>
               <div class="col">
                 <button formnovalidate class="btn btn-success" type="submit">
                   Save

@@ -1,5 +1,15 @@
 {% extends 'crm/base.html' %} {% block content %}
 <div class="container-fluid">
+  <!--BREADCRUMB-->
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Compagnies</li>
+    </ol>
+  </nav>
+  <!--BREADCRUMB END-->
+</div>
+<div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-8">
       {% if not compagnies %}
@@ -11,7 +21,7 @@
         <a
           class="btn btn-secondary position-absolute top-50 end-0"
           href="{% url 'add_company' %}"
-          >Add Compagnie</a
+          >ADD COMPANY</a
         >
       </h1>
 
@@ -22,15 +32,28 @@
           <th>N° of Contacts</th>
           <th>Action</th>
         </tr>
-        {% for compagnie in compagnies %}
+        {% for company in compagnies %}
         <tr>
-          <td>{{ compagnie.name }}</td>
-          <td>{{ compagnie.city }}</td>
-          <td>{{ compagnie.contact_set.count }}</td>
+          <td>{{ company.name }}</td>
+          <td>{{ company.city }}</td>
+          <td>{{ company.contact_set.count }}</td>
           <td>
-            <a class="btn btn-secondary" href="{% url 'company' compagnie.id %}"
+            <a
+              class="btn btn-secondary btn-sm"
+              href="{% url 'company' company.id %}"
               >Detail</a
             >
+            <!-- Button trigger modal -->
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal{{ company.id }}"
+            >
+              Delete
+            </button>
+            <!--Modal Detail Include-->
+            {% include 'crm/include/delete_company_modal.html' %}
           </td>
         </tr>
         {% endfor %}

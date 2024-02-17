@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div
   class="modal fade"
-  id="exampleModal"
+  id="exampleModal{{ company.id }}"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -18,7 +18,9 @@
         ></button>
       </div>
       <div class="modal-body">
-        Are you sure you want to delete <strong>'{{ company.name }}'</strong> ?
+        Are you sure you want to delete
+        <strong>'{{ company.name }}</strong>
+        ?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">

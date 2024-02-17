@@ -14,6 +14,6 @@ urlpatterns = [
     path("add_company/", add_company, name='add_company'),
     path("company/<int:pk>/", company_detail, name='company'),
     path("update_company/<int:pk>/", update_company, name='update_company'),
-    path("company/<int:pk>/add_contact/", add_contact_from_company, name='add_contactfromcompany')
+    path("company/<int:pk>/add_contact/", add_contact_from_company, name='add_contactfromcompany'),
     #path("delete_company/<int:pk>/", delete_company, name='delete_company'),
 ]
