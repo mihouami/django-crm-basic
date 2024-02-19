@@ -1,4 +1,4 @@
-{% extends 'crm/base.html' %} {% block content %}
+{% extends 'crm/base.html' %} {% block content %} 
 <div class="container-fluid">
   <!--BREADCRUMB-->
   <nav aria-label="breadcrumb">
@@ -85,15 +85,15 @@
       <table id="" style="width: 100%" class="display table table-hover table-striped table-bordered text-center">
         <thead class="bg-dark">
           <tr class="table table-dark">
-          <th>Full Name</th>
-          <th>Position</th>
-          <th>Action</th>
+          <th class="text-center">Full Name</th>
+          <th class="text-center">Position</th>
+          <th class="text-center">Action</th>
         </tr>
       </thead>
         <tbody>{% for contact in company.contact_set.all %}
           <tr>
-            <td>{{ contact.first_name }} {{ contact.last_name }}</td>
-            <td>{{ contact.company }}</td>
+            <td class="text-center">{{ contact.first_name }} {{ contact.last_name }}</td>
+            <td class="text-center">{{ contact.position }}</td>
             <td>
               <a class="btn btn-secondary" href="{% url 'contact' contact.id %}"
                 >Detail</a

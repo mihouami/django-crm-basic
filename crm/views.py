@@ -104,16 +104,23 @@ def delete_contact(request, pk):
 def add_contact(request):
     if request.user.is_authenticated:
         form = AddContactForm(request.POST or None)
+        '''
         page = request.META.get('HTTP_REFERER')
         if 'add_contact' not in str(page) and page != None:
             Previous.objects.create(previous=page)
-        context = {'form':form, 'previous':Previous.objects.last().previous}
+        '''
+        context = {'form':form}
         if request.method == 'POST':
             if form.is_valid():
                 form.save()
                 messages.success(request, 'Contact added')
-                previous_page = request.META.get('HTTP_REFERER')
-                return redirect(previous_page)
+                if 'save' in request.POST:
+                    return redirect('contacts')
+                elif 'continue' in request.POST:
+                    contact = Contact.objects.last()
+                    return redirect('contact', contact.id)
+                else:
+                    return redirect('add_contact')
         return render(request, 'crm/add_contact2.html', context)
     else:
         messages.success(request, 'You need to be logged in to access this page')
@@ -179,7 +186,6 @@ def add_company(request):
                 elif 'continue' in request.POST:
                     company = Company.objects.last()
                     return redirect('company', pk=company.id)
-
                 else:
                     previous_page = request.META.get('HTTP_REFERER')
                     return redirect(previous_page)
@@ -211,18 +217,26 @@ def add_contact_from_company(request, pk):
     if request.user.is_authenticated:
         company = Company.objects.get(id=pk)
         form = AddContactFromCompanyForm(request.POST or None)
+        '''
         page = request.META.get('HTTP_REFERER')
         if 'add_contact' not in str(page) and page != None:
             Previous.objects.create(previous=page)
+        '''
         if request.method == 'POST':
             if form.is_valid():
                 contact = form.save(commit=False)
                 contact.company = company
                 form.save()
                 messages.success(request, 'Contact added')
-                previous_page = request.META.get('HTTP_REFERER')
-                return redirect(previous_page)
-        context = {'form':form, 'company':company, 'previous':Previous.objects.last().previous}
+                #previous_page = request.META.get('HTTP_REFERER')
+                if 'save' in request.POST:
+                    return redirect('company', company.id)
+                elif 'continue' in request.POST:
+                    contact = Contact.objects.last()
+                    return redirect('contact', contact.id)
+                else:
+                    return redirect('add_contactfromcompany', company.id)
+        context = {'form':form, 'company':company}
         return render(request, 'crm/add_contact2.html', context)
     else:
         messages.success(request, 'You need to be logged in to access this page')
