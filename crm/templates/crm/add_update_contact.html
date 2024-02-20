@@ -12,7 +12,7 @@
       <li class="breadcrumb-item">
         <a href="{% url 'company' company.id %}">{{ company.name }}</a>
       </li>
-      <li class="breadcrumb-item active" aria-current="page">Add contact</li>
+      <li class="breadcrumb-item active" aria-current="page">Update contact</li>
     </ol>
   </nav>
   <!--BREADCRUMB END-->
@@ -37,7 +37,12 @@
   <div class="row">
     <div class="col-xl-8 offset-xl-2">
       <div class="card">
+        {% if form.instance.id %}
+        <h3 class="card-header">Update Contact</h3>
+        {% else %}
         <h3 class="card-header">Add Contact</h3>
+        {% endif %}
+
         <form method="post">
           {% csrf_token %}
           <div class="card-body">
@@ -96,6 +101,24 @@
               </div>
             </div>
             <div class="row text-center my-3">
+              {% if form.instance.id %}
+              <div class="col">
+                <button
+                  formnovalidate
+                  class="btn btn-success"
+                  type="submit"
+                  name="update"
+                >
+                  UPDATE
+                </button>
+                <a
+                  class="btn btn-primary"
+                  href="{% url 'contact' contact.id %}"
+                >
+                  Back
+                </a>
+              </div>
+              {% else %}
               <div class="col">
                 <button
                   formnovalidate
@@ -121,6 +144,7 @@
                   Save and view contact page
                 </button>
               </div>
+              {% endif %}
             </div>
           </div>
         </form>

@@ -9,10 +9,12 @@ class CompanyForm(ModelForm):
         model = Company
         fields = ('name', 'city')
 
+
 class AddContactFromCompanyForm(ModelForm):
     class Meta:
         model = Contact
         exclude = ['company']
+
 
 class AddContactForm(ModelForm):
     first_name = CharField(label='', widget=TextInput(attrs={'class':'form-control', 'placeholder':'test'}))
@@ -30,7 +32,6 @@ class AddContactForm(ModelForm):
     class Meta:
         model = Contact
         fields = '__all__'
-
 
 
 class UserRegisterForm(UserCreationForm):

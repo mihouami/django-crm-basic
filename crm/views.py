@@ -93,11 +93,12 @@ def contact_detail(request, pk):
 def delete_contact(request, pk):
     if request.user.is_authenticated:
         contact = get_object_or_404(Contact, id=pk)
+        company = contact.company
         contact.delete()
         messages.success(request, 'Contact has been deleted')
     else:
         messages.warning(request, 'You must be logged In.')
-    return redirect('contacts')
+    return redirect('company', company.id)
 
 
 
@@ -118,10 +119,10 @@ def add_contact(request):
                     return redirect('contacts')
                 elif 'continue' in request.POST:
                     contact = Contact.objects.last()
-                    return redirect('contact', contact.id)
+                    return redirect('contact', pk=contact.id)
                 else:
                     return redirect('add_contact')
-        return render(request, 'crm/add_contact2.html', context)
+        return render(request, 'crm/add_update_contact.html', context)
     else:
         messages.success(request, 'You need to be logged in to access this page')
         return redirect('home')
@@ -131,12 +132,16 @@ def add_contact(request):
 def update_contact(request, id):
     if request.user.is_authenticated:
         contact = get_object_or_404(Contact, pk=id)
-        form = AddContactForm(request.POST or None, instance=contact)
+        company = contact.company
+        form = AddContactFromCompanyForm(request.POST or None, instance=contact)
         if form.is_valid():
             form.save()
-            return redirect('contact', pk=id)
-        context = {'form':form, 'contact':contact}
-        return render(request, 'crm/update_contact.html', context)
+            messages.success(request, 'contact updated')
+            if 'update' in request.POST:
+                return redirect('contact', pk=id)
+        context = {'form':form, 'contact':contact, 'company':company}
+        return render(request, 'crm/add_update_contact.html', context)
+        #return render(request, 'crm/update_contact.html', context)
     else:
         messages.success(request, 'You need to be logged in to access this page')
         return redirect('home')
@@ -237,7 +242,7 @@ def add_contact_from_company(request, pk):
                 else:
                     return redirect('add_contactfromcompany', company.id)
         context = {'form':form, 'company':company}
-        return render(request, 'crm/add_contact2.html', context)
+        return render(request, 'crm/add_update_contact.html', context)
     else:
         messages.success(request, 'You need to be logged in to access this page')
         return redirect('home')

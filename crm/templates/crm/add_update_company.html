@@ -56,6 +56,12 @@
                 <button formnovalidate class="btn btn-success" type="submit">
                   Update
                 </button>
+                <a
+                  class="btn btn-primary"
+                  href="{% url 'company' company.id %}"
+                >
+                  Back
+                </a>
                 {% else %}
                 <button
                   formnovalidate
