@@ -12,7 +12,11 @@
       <li class="breadcrumb-item">
         <a href="{% url 'company' company.id %}">{{ company.name }}</a>
       </li>
+      {% if form.instance.id %}
       <li class="breadcrumb-item active" aria-current="page">Update contact</li>
+      {% else %}
+      <li class="breadcrumb-item active" aria-current="page">Add contact</li>
+      {% endif %}
     </ol>
   </nav>
   <!--BREADCRUMB END-->

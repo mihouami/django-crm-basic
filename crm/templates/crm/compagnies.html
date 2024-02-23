@@ -44,16 +44,16 @@
             <td>{{ company.name }}</td>
             <td>{{ company.city }}</td>
             <td class="text-center">{{ company.contact_set.count }}</td>
-            <td>
+            <td style="width: 15">
               <div class="row justify-content-center">
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                   <a
-                    class="btn btn-secondary btn-sm"
+                    class="btn btn-info btn-sm"
                     href="{% url 'company' company.id %}"
-                    >Detail</a
-                  >
+                    ><i class="bi bi-eye-fill"></i>
+                  </a>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-3">
                   <!-- Button trigger modal -->
                   <button
                     type="button"
@@ -61,10 +61,17 @@
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal{{ company.id }}"
                   >
-                    Delete
+                    <i class="bi bi-trash"></i>
                   </button>
                   <!--Modal Detail Include-->
                   {% include 'crm/include/delete_company_modal.html' %}
+                </div>
+                <div class="col-lg-3">
+                  <a
+                    class="btn btn-secondary btn-sm"
+                    href="{% url 'add_contactfromcompany' company.id %}"
+                    ><i class="bi bi-person-plus-fill"></i>
+                  </a>
                 </div>
               </div>
             </td>

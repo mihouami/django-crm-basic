@@ -1,31 +1,33 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages 
-from .forms import UserRegisterForm, AddContactForm, CompanyForm, AddContactFromCompanyForm
-from .models import Contact, Company, Previous
+from .forms import UserRegisterForm, AddContactForm, CompanyForm, AddContactFromCompanyForm, OfferForm
+from .models import Contact, Company, Offer
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
 
-
-#USERS VIEW
 
 #HOME AND LOGIN PAGE
 def home(request):
     contacts = Contact.objects.all()
     compagnies = Company.objects.all()
+    offers = Offer.objects.all()
     context = {'title':'Home', 'contacts':contacts, 'compagnies':compagnies}
     context['request.method'] = request.method
     context['request'] = request
+    context['offers'] = offers
     context['compagnies_per_city'] = Company.objects.values('city').annotate(company_count=Count('id'))
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         context['test'] = request.POST
-        
-
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             messages.success(request, "You have been logged In.")
+            next_url = request.GET.get('next', '')
+            if next_url:
+                return redirect(next_url)            
         else:
             messages.warning(request, "There was an error, please try again!")
         return redirect('home')
@@ -80,9 +82,8 @@ def contacts(request):
 def contact_detail(request, pk):
     if request.user.is_authenticated:
         page = request.META.get('HTTP_REFERER')
-        if 'update_contact' not in str(page) and page != None:
-            Previous.objects.create(previous=page)
-        context = {'contact':Contact.objects.get(id=pk), 'previous':Previous.objects.last().previous, 'page':type(page)}
+
+        context = {'contact':Contact.objects.get(id=pk), 'page':type(page)}
         return render(request, 'crm/contact.html', context)
     else:
         messages.warning(request, 'You must be logged In.')
@@ -105,11 +106,6 @@ def delete_contact(request, pk):
 def add_contact(request):
     if request.user.is_authenticated:
         form = AddContactForm(request.POST or None)
-        '''
-        page = request.META.get('HTTP_REFERER')
-        if 'add_contact' not in str(page) and page != None:
-            Previous.objects.create(previous=page)
-        '''
         context = {'form':form}
         if request.method == 'POST':
             if form.is_valid():
@@ -177,11 +173,6 @@ def company_detail(request, pk):
 def add_company(request):
     if request.user.is_authenticated:
         form = CompanyForm(request.POST or None)
-        """
-        page = request.META.get('HTTP_REFERER')
-        if 'add_company' not in str(page) and page != None:
-            Previous.objects.create(previous=page)
-        """
         if request.method == 'POST':
             if form.is_valid():
                 form.save()
@@ -233,7 +224,6 @@ def add_contact_from_company(request, pk):
                 contact.company = company
                 form.save()
                 messages.success(request, 'Contact added')
-                #previous_page = request.META.get('HTTP_REFERER')
                 if 'save' in request.POST:
                     return redirect('company', company.id)
                 elif 'continue' in request.POST:
@@ -262,6 +252,33 @@ def delete_company(request, pk):
 '''
 
         
+
+#OFFERS
+@login_required()
+def offers(request):
+    offers = Offer.objects.all()
+    form = OfferForm()
+    if request.method == 'POST':
+        if 'update' in request.POST:
+            id = request.POST.get('update')
+            offer = Offer.objects.get(id=id)
+            form = OfferForm(instance=offer)
+        elif 'add' in request.POST:
+            form = OfferForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Offer added')
+                return redirect('offers')
+        elif 'modify' in request.POST:
+            id = request.POST.get('modify')
+            offer = Offer.objects.get(id=id)
+            form = OfferForm(request.POST, instance=offer)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Offer Updated')
+                return redirect('offers')
+    context = {'offers':offers, 'form':form}
+    return render(request, 'crm/offers.html', context)
 
 
 

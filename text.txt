@@ -1,0 +1,7 @@
+compagnies = Company.objects.all()
+compagnies_per_city = Company.objects.values('city').annotate(company_count=Count('id'))
+get compagnies count in HTML : compagnies.count
+
+
+
+

@@ -1,24 +1,60 @@
 {% extends 'crm/base.html' %} {% block content %} {% if user.is_authenticated %}
 <div class="container-fluid">
-  <ul>
-    <li>N° of contacts : {{ contacts.count }}</li>
-    <li>N° of compagnies : {{ compagnies.count }}</li>
-    {% for companyy in compagnies_per_city %}
-    <li>
-      {{ companyy.city }}: {{ companyy.company_count }}
+  <div class="row border">
+    <div class="col-lg-4 border">
+      <h2 class="text-center">Compagnies ({{ compagnies.count }})</h2>
       <ul>
-        {% for company in compagnies %} {% if company.city == companyy.city %}
-        <li>{{ company.name }}: {{ company.contact_set.count }}</li>
+        {% for company_city in compagnies_per_city %}
+        <li>
+          {{ company_city.city }}: {{ company_city.company_count }}
+          <ul>
+            {% for company in compagnies %}<!---->
+            {% if company.city == company_city.city %}
+            <li>{{ company.name }}: {{ company.contact_set.count }}</li>
+            {% endif %} {% endfor %}
+          </ul>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-lg-4 border">
+      <h2 class="text-center">Contacts ({{ contacts.count }})</h2>
+      <ul>
+        {% for company in compagnies %}<!---->
+        {% if company.contact_set.count != 0 %}
+        <li>{{ company }}: {{ company.contact_set.count }}</li>
         <ul>
           {% for contact in company.contact_set.all %}
-          <li>{{ contact.first_name }} {{ contact.last_name }}</li>
+          <li>
+            {{ contact.first_name }}<!---->
+            {{ contact.last_name }} - {{ contact.position }}:<!---->
+            {{ contact.offer_set.count }}
+          </li>
           {% endfor %}
         </ul>
         {% endif %} {% endfor %}
       </ul>
-    </li>
-    {% endfor %}
-  </ul>
+    </div>
+    <div class="col-lg-4 border">
+      <h2 class="text-center">Offers ({{ offers.count }})</h2>
+
+      <ul>
+        {% for contact in contacts %}<!---->
+        {% if contact.offer_set.count != 0 %}
+        <li>
+          {{ contact.first_name }}<!---->
+          {{ contact.last_name }} - {{ contact.position }}:<!---->
+          {{ contact.offer_set.count }}
+          <ul>
+            {% for offer in contact.offer_set.all %}
+            <li>{{ offer.number }} - {{ offer.amount }}$</li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% endif %} {% endfor %}
+      </ul>
+    </div>
+  </div>
 
   {% else %} {% include 'crm/include/login.html' %} {% endif %}
 </div>

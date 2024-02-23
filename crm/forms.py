@@ -1,7 +1,25 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.forms import EmailField, CharField, TextInput, ModelForm, ModelChoiceField, Select
-from .models import Contact, Company
+from django.forms import EmailField, CharField, TextInput, ModelForm, ModelChoiceField, Select, DateField, DateInput
+from .models import Contact, Company, Offer
+
+class DateInput(DateInput):
+    input_type = 'date'
+
+class OfferForm(ModelForm):
+    date = DateField(label='RFQ Date', widget=DateInput)
+
+    class Meta:
+        model = Offer
+        fields = '__all__'
+    '''
+    def __init__(self, *args, **kwargs):
+        super(OfferForm, self).__init__(*args, **kwargs)
+
+        for _, field in self.fields.items():
+            field.label = ''
+    '''
+
 
 
 class CompanyForm(ModelForm):
@@ -46,7 +64,7 @@ class UserRegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(UserRegisterForm, self).__init__(*args, **kwargs)
         
-        for field_name, field in self.fields.items():
+        for _, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
         #self.fields['username'].widget.attrs['class'] = 'form-control'

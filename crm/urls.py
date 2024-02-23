@@ -16,4 +16,5 @@ urlpatterns = [
     path("update_company/<int:pk>/", update_company, name='update_company'),
     path("company/<int:pk>/add_contact/", add_contact_from_company, name='add_contactfromcompany'),
     #path("delete_company/<int:pk>/", delete_company, name='delete_company'),
+    path('offers/', offers, name='offers'),
 ]

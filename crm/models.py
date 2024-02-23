@@ -1,9 +1,9 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
-class Previous(models.Model):
-    previous = models.URLField(max_length=200, blank=True, null=True)
+
 
 class Company(models.Model):
     class TypeChoice(models.TextChoices):
@@ -16,6 +16,9 @@ class Company(models.Model):
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        verbose_name_plural = "compagnies"
 
 class Contact(models.Model):
     added_at = models.DateTimeField(auto_now_add=True)
@@ -29,5 +32,19 @@ class Contact(models.Model):
     def __str__(self):
         return f'{self.first_name} {self.last_name} - {self.company}'
     
+
+class Offer(models.Model):
+    class TypeChoice(models.TextChoices):
+        RFQ = 'RFQ', 'RFQ'
+        OFFER = 'Offer', 'Offer'
+        NEGO = 'Negotiation', 'Negotiation'
+        WON = 'Won', 'Won'
+        LOST = 'Lost', 'Lost'
+
+    contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    step = models.CharField(max_length=11, choices=TypeChoice.choices)
+    amount = models.FloatField(default=0)
+    number = models.CharField(max_length=15, unique=True)
+    date = models.DateField()
 
 

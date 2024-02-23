@@ -87,6 +87,7 @@
           <tr class="table table-dark">
           <th class="text-center">Full Name</th>
           <th class="text-center">Position</th>
+          <th class="text-center">Offers</th>
           <th class="text-center">Action</th>
         </tr>
       </thead>
@@ -94,10 +95,26 @@
           <tr>
             <td class="text-center">{{ contact.first_name }} {{ contact.last_name }}</td>
             <td class="text-center">{{ contact.position }}</td>
+            <td class="text-center">{{ contact.offer_set.count }}</td>
             <td>
-              <a class="btn btn-secondary" href="{% url 'contact' contact.id %}"
-                >Detail</a
-              >
+              <div class="row justify-content-center">
+                <div class="col-lg-3">
+                  <a
+                    class="btn btn-outline-primary btn-sm"
+                    href="{% url 'contact' contact.id %}"
+                    ><i class="bi bi-eye-fill"></i>
+                  </a>
+                </div>
+                <div class="col-lg-3">
+                  <a
+                  class="btn btn-outline-dark btn-sm"
+                  href=""
+                  ><i class="bi bi-plus-square-fill"></i>
+
+                </a>
+                </div>
+              </div>
+              
             </td>
           </tr>
           {% endfor %}</tbody>
